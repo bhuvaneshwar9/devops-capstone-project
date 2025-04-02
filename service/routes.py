@@ -100,3 +100,17 @@ def check_content_type(media_type):
         status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
         f"Content-Type must be {media_type}",
     )
+######################################################################
+# LIST ALL ACCOUNTS
+######################################################################
+@app.route("/accounts", methods=["GET"])
+def list_accounts():
+    """
+    List all Accounts
+    This endpoint will list all Accounts
+    """
+    app.logger.info("Processing all records")
+    accounts = Account.all()
+    results = [account.serialize() for account in accounts]
+    # Return as a tuple with the status code, not just the list
+    return jsonify(results), status.HTTP_200_OK
