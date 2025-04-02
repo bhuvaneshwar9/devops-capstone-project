@@ -134,3 +134,27 @@ def test_get_account_not_found(self):
     """It should not Read an Account that is not found"""
     resp = self.client.get(f"{BASE_URL}/0")
     self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
+######################################################################
+# UPDATE AN EXISTING ACCOUNT
+######################################################################
+@app.route("/accounts/<int:account_id>", methods=["PUT"])
+def update_account(account_id):
+    """
+    Update an Account
+    This endpoint will update an Account based on the posted data
+    """
+    app.logger.info("Request to update an Account with id: %s", account_id)
+    
+    account = Account.find(account_id)
+    if not account:
+        abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
+        
+    account.deserialize(request.get_json())
+    account.update()
+    
+    return account.serialize(), status.HTTP_200_OK
+def test_update_account_not_found(self):
+    """It should not Update an Account that is not found"""
+    test_account = AccountFactory()
+    resp = self.client.put(f"{BASE_URL}/0", json=test_account.serialize())
+    self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
