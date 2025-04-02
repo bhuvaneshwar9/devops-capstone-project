@@ -57,7 +57,49 @@ def create_accounts():
         jsonify(message), status.HTTP_201_CREATED, {"Location": location_url}
     )
 
+######################################################################
+# LIST ALL ACCOUNTS
+######################################################################
 
+# ... place you code here to LIST accounts ...
+
+
+######################################################################
+# READ AN ACCOUNT
+######################################################################
+
+# ... place you code here to READ an account ...
+
+
+######################################################################
+# UPDATE AN EXISTING ACCOUNT
+######################################################################
+
+# ... place you code here to UPDATE an account ...
+
+
+######################################################################
+# DELETE AN ACCOUNT
+######################################################################
+
+# ... place you code here to DELETE an account ...
+
+
+######################################################################
+#  U T I L I T Y   F U N C T I O N S
+######################################################################
+
+
+def check_content_type(media_type):
+    """Checks that the media type is correct"""
+    content_type = request.headers.get("Content-Type")
+    if content_type and content_type == media_type:
+        return
+    app.logger.error("Invalid Content-Type: %s", content_type)
+    abort(
+        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
+        f"Content-Type must be {media_type}",
+    )
 ######################################################################
 # LIST ALL ACCOUNTS
 ######################################################################
@@ -72,8 +114,6 @@ def list_accounts():
     results = [account.serialize() for account in accounts]
     # Return as a tuple with the status code, not just the list
     return jsonify(results), status.HTTP_200_OK
-
-
 ######################################################################
 # READ AN ACCOUNT
 ######################################################################
@@ -90,8 +130,10 @@ def get_account(account_id):
         abort(status.HTTP_404_NOT_FOUND, f"Account with id [{account_id}] could not be found.")
         
     return account.serialize(), status.HTTP_200_OK
-
-
+def test_get_account_not_found(self):
+    """It should not Read an Account that is not found"""
+    resp = self.client.get(f"{BASE_URL}/0")
+    self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 ######################################################################
 # UPDATE AN EXISTING ACCOUNT
 ######################################################################
@@ -111,8 +153,11 @@ def update_account(account_id):
     account.update()
     
     return account.serialize(), status.HTTP_200_OK
-
-
+def test_update_account_not_found(self):
+    """It should not Update an Account that is not found"""
+    test_account = AccountFactory()
+    resp = self.client.put(f"{BASE_URL}/0", json=test_account.serialize())
+    self.assertEqual(resp.status_code, status.HTTP_404_NOT_FOUND)
 ######################################################################
 # DELETE AN ACCOUNT
 ######################################################################
@@ -131,20 +176,3 @@ def delete_account(account_id):
     account.delete()
     
     return "", status.HTTP_204_NO_CONTENT
-
-
-######################################################################
-#  U T I L I T Y   F U N C T I O N S
-######################################################################
-
-
-def check_content_type(media_type):
-    """Checks that the media type is correct"""
-    content_type = request.headers.get("Content-Type")
-    if content_type and content_type == media_type:
-        return
-    app.logger.error("Invalid Content-Type: %s", content_type)
-    abort(
-        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE,
-        f"Content-Type must be {media_type}",
-    )
