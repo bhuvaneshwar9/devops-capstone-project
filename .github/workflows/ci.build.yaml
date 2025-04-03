@@ -40,6 +40,11 @@ jobs:
           # Exit-zero treats all errors as warnings
           flake8 service --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
           
+      - name: Run unit tests with nose
+        run: nosetests -v --with-spec --spec-color --with-coverage --cover-package=service
+        env:
+          DATABASE_URI: "postgresql://postgres:pgs3cr3t@postgres:5432/testdb"
+          
       - name: Run tests
         run: |
           echo "Running tests with pytest"
