@@ -139,4 +139,5 @@ Licensed under the Apache License. See [LICENSE](LICENSE)
 
 [Additional existing README content]
 
-
+![Build Status]
+(https://github.com/bhuvaneshwar9/devops-capstone-project/actions/workflows/ci-build.yaml/badge.svg)
