@@ -6,6 +6,7 @@ on:
   pull_request:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -23,7 +24,6 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-          
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -35,17 +35,10 @@ jobs:
           
       - name: Lint with flake8
         run: |
-          # Stop the build if there are Python syntax errors or undefined names
-          flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics || echo "Linting found errors but continuing build"
-          # Exit-zero treats all errors as warnings
-          flake8 service --count --max-complexity=10 --max-line-length=127 --statistics --exit-zero
+          flake8 service --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 service --count --max-complexity=10 --max-line-length=127 --statistics
           
       - name: Run unit tests with nose
-        run: nosetests -v --with-spec --spec-color --with-coverage --cover-package=service
+        run: nosetests
         env:
           DATABASE_URI: "postgresql://postgres:pgs3cr3t@postgres:5432/testdb"
-          
-      - name: Run tests
-        run: |
-          echo "Running tests with pytest"
-          python -m pytest || echo "No tests found or tests failed"
