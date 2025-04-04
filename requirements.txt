@@ -33,4 +33,4 @@ flask-cors
 flask-sqlalchemy
 flask-restx
 flask-migrate
-psycopg2-binary
+
