@@ -27,9 +27,10 @@ coverage==6.3.2
 
 # Utilities
 httpie==3.2.1
+
 flask-talisman
 flask-cors
 flask-sqlalchemy
 flask-restx
 flask-migrate
-psycopg2-binary
+
